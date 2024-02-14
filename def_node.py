@@ -2,16 +2,16 @@
 # This file contains the definition of the Node class, which is used to represent nodes in a search tree.
 class Node:
     def __init__(self, coordinates, g, h, f, parent):
-        # Coordinates (e.g., (x, y) in a grid)
+        
         self.coordinates = coordinates
         
-        # g: Cost from the start node to this node
+       # Cost from the start node to this node
         self.g = g
         
-        # h: Heuristic - estimated cost from this node to the end node
+        #Heuristic - estimated cost from this node to the end node
         self.h = h
         
-        # f: Total cost of the node (f = g + h)
+        # Total cost of the node (f = g + h)
         self.f = f
         
         # Parent node: the node from which this node was reached
