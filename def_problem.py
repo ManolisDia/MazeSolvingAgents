@@ -9,7 +9,7 @@ class Problem:
 
     def actions(self, coordinates):
         actions = []
-        directions = [(0, -1), (0, 1), (-1, 0), (1, 0)]  # Up, Down, Left, Right
+        directions = [(0, -1), (0, 1), (-1, 0), (1, 0)] 
         for dx, dy in directions:
             next_coordinates = (coordinates[0] + dx, coordinates[1] + dy)
             if 0 <= next_coordinates[0] < len(self.maze) and 0 <= next_coordinates[1] < len(self.maze[0]) and self.maze[next_coordinates[0]][next_coordinates[1]] == 0:
