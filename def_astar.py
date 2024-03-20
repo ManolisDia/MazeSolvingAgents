@@ -5,6 +5,8 @@ from def_node import Node
 
 # A* search algorithm
 def astar_search(maze, initial, goal):
+    
+    
 
     #g is the cost of the path from the start node to the current node which for the start node is zero
     g_start = 0
@@ -23,7 +25,7 @@ def astar_search(maze, initial, goal):
 
     i = 0
     
-    while open_list != [] :
+    while open_list != [] and i < 2 :
         
         #i += 1
         #find the node in the open list with the lowest f value
@@ -42,11 +44,23 @@ def astar_search(maze, initial, goal):
         closed.append(current_node)
         #print("adding", current_node.coordinates, "to closed list") 
 
-        print("current node: ", current_node.coordinates)
+        #print("current node: ", current_node.coordinates)
         #if the current node is the goal, return the current node
         if current_node.coordinates == goal:
             print("goal coordinate is:",current_node.coordinates)
             print ("goal path is:", current_node.path())
+
+            solvedMaze = [row[:] for row in maze]
+
+            print("Solved maze visualised:")
+            for node in current_node.path():
+                x, y = node.coordinates  # Assuming node.coordinates returns a tuple (row, col)
+                solvedMaze[x][y] = 2  # Mark the path
+
+            for row in solvedMaze:
+                print(row)
+
+
             return current_node
         
         #identifying neighbors
