@@ -1,10 +1,6 @@
 from def_solver import *
 from def_maze_entry_point import maze
 
-
-
-
-
 class Rule:
 
     def __init__(self, condition, action):
@@ -17,50 +13,65 @@ class Rule:
     def execute(self, state):
         return self.action(state)
     
-  
 
-def can_move_right(state):
-    x, y, _maze = state
-    return y + 1 < len(_maze[0]) and _maze[x][y + 1] == 0
+def can_move_right(state, visited_cells_and_rules, current_rule):
+    x, y, maze = state
+    if y + 1 >= 0 and maze[x][y + 1] == 0:
+        if (x, y + 1) not in visited_cells_and_rules:
+            return True
+        else:
+            return visited_cells_and_rules[(x, y - 1)] != current_rule
+    return False
 
     
-def move_right(state):
+def move_right(state, visited_cells_and_rules, current_rule):
     x, y, maze = state
-    return (x, y+1, maze)
+    #visited_cells_and_rules[(x, y + 1)] = current_rule
+    return (x, y + 1, maze)
     
-def can_move_left(state):
+def can_move_left(state, visited_cells_and_rules, current_rule):
     x, y, maze = state
-    return y - 1 >= 0 and maze[x][y-1] == 0
+    if y - 1 >= 0 and maze[x][y - 1] == 0:
+        if (x, y - 1) not in visited_cells_and_rules:
+            return True
+        else:
+            return visited_cells_and_rules[(x, y - 1)] != current_rule
+    return False
     
-def move_left(state):
+def move_left(state, visited_cells_and_rules, current_rule):
     x, y, maze = state
-    return (x, y-1, maze)
+    #visited_cells_and_rules[(x, y - 1)] = current_rule
+    return (x, y - 1, maze)
 
-def can_move_up(state):
+
+def can_move_up(state, visited_cells_and_rules, current_rule):
     x, y, maze = state
-    return x - 1 >= 0 and maze[x-1][y] == 0
+    if x - 1 >= 0 and maze[x - 1][y] == 0:
+        if (x - 1, y) not in visited_cells_and_rules:
+            return True
+        else:
+            return visited_cells_and_rules[(x - 1, y)] != current_rule
+    return False
 
-def move_up(state):
+def move_up(state, visited_cells_and_rules, current_rule):
     x, y, maze = state
-    return (x-1, y, maze)
+    #visited_cells_and_rules[(x - 1, y)] = current_rule
+    return (x - 1, y, maze)
 
-def can_move_down(state):
+def can_move_down(state, visited_cells_and_rules, current_rule):
     x, y, maze = state
-    return x + 1 < len(maze) and maze[x+1][y] == 0
+    if x + 1 < len(maze) and maze[x + 1][y] == 0:
+        if (x + 1, y) not in visited_cells_and_rules:
+            return True
+        else:
+            return visited_cells_and_rules[(x + 1, y)] != current_rule
+    return False
 
-def move_down(state):
+def move_down(state, visited_cells_and_rules, current_rule):
     x, y, maze = state
-    return (x+1, y, maze)
+    #visited_cells_and_rules[(x + 1, y)] = current_rule
+    return (x + 1, y, maze)
 
-def is_visited(self, state):
-    """Check if the current position (x, y) is in the set of visited cells."""
-    x, y, _ = state  # Extract position (ignore maze from state)
-    return (x, y) in self.visitedCellsAndRuleUsed
-
-def mark_visited(self, state):
-    """mark the given state (position) as visited."""
-    x, y, _ = state  # Extract position (ignore maze from state)
-    self.visited_cells.add((x, y))  # Add position to visited_cells set
 
 def is_goal(state, goal):
     x, y, _ = state
@@ -70,12 +81,15 @@ def is_goal(state, goal):
     else:
         return False
     
-def finish():
-    print("Maze complete!")
-
-rules = [
-    Rule(condition=can_move_left, action=move_left),
-    Rule(condition=can_move_up, action=move_up),
-    Rule(condition=can_move_right, action=move_right),
-    Rule(condition=can_move_down, action=move_down),
-]
+def can_move_right(state, visited_cells_and_rules, current_rule):
+    x, y, maze = state
+    if y + 1 < len(maze[0]) and maze[x][y + 1] == 0:
+        if (x, y + 1) not in visited_cells_and_rules:
+            #this is just checking if the cell has been visited before
+            return True
+        elif (x, y + 1) in visited_cells_and_rules and current_rule in visited_cells_and_rules[(x, y + 1)]:
+            return "You can go here but you cant use that rule but you can try another rule"
+        else:
+            return "Returning False"
+            
+    return False
