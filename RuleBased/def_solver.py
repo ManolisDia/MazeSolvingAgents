@@ -38,17 +38,25 @@ class Solver:
 
 
     def apply_rules(self):
-        #writing here so i dont forget, issue is that when rule is added to dictionary, it is added to
-        #the cell it went to not the cell it came from.
-        #so if I used move_right on 0,0 the move_right is added to 0,1 not 0,0
-        x, y, _ = self.current_state  # Extract x and y from the current state
-        
-        visited_rules = self.visitedCellsAndRuleUsed.get((x, y), set())  # Get the set of used rule names for the current state
 
-        # Iterate over the rule stack
+        x, y, _ = self.current_state
+        
+        visited_rules = self.visitedCellsAndRuleUsed.get((x, y), set()) 
+
+        #first prioritize unvisited cells
+        for rule in self.ruleStack:
+            next_state = rule.action(self.current_state, self.visitedCellsAndRuleUsed, rule)
+            if rule.condition(self.current_state, self.visitedCellsAndRuleUsed, rule) and not self.is_visited(next_state):
+                next_state = rule.action(self.current_state, self.visitedCellsAndRuleUsed, rule)
+                if not self.is_visited(self.current_state):
+                    self.mark_visited(self.current_state, rule)
+                self.current_state = next_state
+                return rule, self.current_state
+
+
+        #then once you have to use visited cells, prioritize rules you havent used on those cells before
         for rule in self.ruleStack:
             rule_name = rule.action.__name__
-            # Check if the rule can be applied and has not been used before for this state
             if rule.condition(self.current_state, self.visitedCellsAndRuleUsed, rule) and rule_name not in visited_rules:
                 next_state = rule.action(self.current_state, self.visitedCellsAndRuleUsed, rule)
                 if not self.is_visited(self.current_state):
@@ -70,11 +78,8 @@ class Solver:
             if is_goal(self.current_state, self.goal_state):
                 print("Maze Complete!")
                 break
-            #should I be starting with this? idk something seems off but maybe not.
             rule, new_state = self.apply_rules()
             x, y, _ = new_state
-            #print("NEW STATE: ", (y,x))
-            print("Rule used to get to this state is: ", rule.action.__name__)
 
             #print("ENDOFIT")
   
