@@ -39,6 +39,7 @@ def can_move_left(state, visited_cells_and_rules, current_rule):
         else:
             # Check if the same rule has not been used in this cell
             return visited_cells_and_rules[(x, y - 1)] != current_rule
+            
     return False
 
 def move_left(state, visited_cells_and_rules, current_rule):
