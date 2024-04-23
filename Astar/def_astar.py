@@ -25,15 +25,15 @@ def astar_search(maze, initial, goal):
 
     i = 0
     
-    while open_list != [] and i < 2 :
-        
-        #i += 1
-        #find the node in the open list with the lowest f value
+    while open_list != []:
+    
+       #i += 1
+       #find the node in the open list with the lowest f value
         current_node = min(open_list, key=lambda node: node.f)
-        #print("current node: ", current_node.coordinates)
-        #print("current node g: ", current_node.g)
-        #print("current node h: ", current_node.h)   
-        #print("current node f: ", current_node.f)
+        print("current node: ", current_node.coordinates)
+        print("current node g: ", current_node.g)
+        print("current node h: ", current_node.h)   
+        print("current node f: ", current_node.f)
     
 
         #remove the current node from the open list
@@ -100,8 +100,8 @@ def astar_search(maze, initial, goal):
                         open_list.append(new_node)
                         #print("adding", new_node.coordinates, "to open list")
                 
-                #print ("open list: ", open_list) 
-                #print ("closed list: ", closed)    
+                print ("open list: ", open_list) 
+                print ("closed list: ", closed)    
                 
                 
 
