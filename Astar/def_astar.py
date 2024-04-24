@@ -119,10 +119,5 @@ def astar_search(maze, initial, goal):
                         open_list.append(new_node)
                         # print("adding", new_node.coordinates, "to open list")
 
-                print("open list: ", open_list)
-                print("closed list: ", closed)
-
-    # print(current_node.coordinates)
-
 
 astar_search(maze, (0, 0), (4, 5))
