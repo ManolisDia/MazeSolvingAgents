@@ -24,9 +24,8 @@ def can_move_right(state, visited_cells_and_rules, current_rule):
             return visited_cells_and_rules[(x, y + 1)] != current_rule
     return False
 
-def move_right(state, visited_cells_and_rules, current_rule):
+def move_right(state):
     x, y, maze = state
-    # visited_cells_and_rules[(x, y + 1)] = current_rule
     return (x, y + 1, maze)
 
 
@@ -42,9 +41,8 @@ def can_move_left(state, visited_cells_and_rules, current_rule):
             
     return False
 
-def move_left(state, visited_cells_and_rules, current_rule):
+def move_left(state):
     x, y, maze = state
-    # visited_cells_and_rules[(x, y - 1)] = current_rule
     return (x, y - 1, maze)
 
 
@@ -59,9 +57,8 @@ def can_move_up(state, visited_cells_and_rules, current_rule):
             return visited_cells_and_rules[(x, y + 1)] != current_rule
     return False
 
-def move_up(state, visited_cells_and_rules, current_rule):
+def move_up(state):
     x, y, maze = state
-    # visited_cells_and_rules[(x - 1, y)] = current_rule
     return (x - 1, y, maze)
 
 
@@ -77,9 +74,8 @@ def can_move_down(state, visited_cells_and_rules, current_rule):
     return False
 
 
-def move_down(state, visited_cells_and_rules, current_rule):
+def move_down(state):
     x, y, maze = state
-    # visited_cells_and_rules[(x + 1, y)] = current_rule
     return (x + 1, y, maze)
 
 

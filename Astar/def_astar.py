@@ -107,7 +107,7 @@ def astar_search(maze, initial, goal):
 
                 
     
-    #print(current_node.coordinates)
+
 
 
 
