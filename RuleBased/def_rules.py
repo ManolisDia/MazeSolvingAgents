@@ -15,7 +15,7 @@ class Rule:
         return self.action(state)
 
 
-def can_move_right(state, visited_cells_and_rules, current_rule):
+def can_move_right(state):
     x, y, maze = state
     if y + 1 < len(maze[0]) and maze[x][y + 1] == 0:  # Checks if the right cell exists and is not a wall
         return True
@@ -27,7 +27,7 @@ def move_right(state):
     return (x, y + 1, maze)
 
 
-def can_move_left(state, visited_cells_and_rules, current_rule):
+def can_move_left(state):
     x, y, maze = state
     # Ensure y+1 is within the width of the maze
     if y - 1 < len(maze[0]) and maze[x][y - 1] == 0:  # Checks if the right cell exists and is not a wall
@@ -40,7 +40,7 @@ def move_left(state):
     return (x, y - 1, maze)
 
 
-def can_move_up(state, visited_cells_and_rules, current_rule):
+def can_move_up(state):
     x, y, maze = state
     # Ensure y+1 is within the width of the maze
     if x - 1 < len(maze[0]) and maze[x - 1][y] == 0:  # Checks if the right cell exists and is not a wall
@@ -53,7 +53,7 @@ def move_up(state):
     return (x - 1, y, maze)
 
 
-def can_move_down(state, visited_cells_and_rules, current_rule):
+def can_move_down(state):
     x, y, maze = state
     # Ensure y+1 is within the width of the maze
     if x + 1 < len(maze[0]) and maze[x + 1][y] == 0:  # Checks if the right cell exists and is not a wall
