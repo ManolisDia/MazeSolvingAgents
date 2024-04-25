@@ -1,6 +1,6 @@
 from def_maze import maze
 from def_maze import calculate_manhattan_distance
-from def_maze import manhattan_distances
+#from def_maze import manhattan_distances
 from def_node import Node
 
 
@@ -9,9 +9,15 @@ def astar_search(maze, initial, goal):
 
     # g is the cost of the path from the start node to the current node which for the start node is zero
     g_start = 0
+<<<<<<< HEAD
     # h is the heuristic which is the estimated cost from the current node to the end node
     h_start = calculate_manhattan_distance(0, 0, 4, 5)
     # f is the total cost of the node
+=======
+    #h is the heuristic which is the estimated cost from the current node to the end node
+    h_start = calculate_manhattan_distance(initial[0], initial[1], goal[0], goal[1])
+    #f is the total cost of the node
+>>>>>>> bd94c29 (simplified rules)
     f_start = g_start + h_start
 
     # create the start node
@@ -25,6 +31,7 @@ def astar_search(maze, initial, goal):
     i = 0
 
     while open_list != []:
+<<<<<<< HEAD
 
         # i += 1
         # find the node in the open list with the lowest f value
@@ -33,17 +40,34 @@ def astar_search(maze, initial, goal):
         print("current node g: ", current_node.g)
         print("current node h: ", current_node.h)
         print("current node f: ", current_node.f)
+=======
+    
+        
+        i += 1
+        #find the node in the open list with the lowest f value
+        current_node = min(open_list, key=lambda node: node.f)
+        print("current node: ", current_node.coordinates, " current node g: ", current_node.g, " current node h: ", current_node.h, " current node f: ", current_node.f)
+    
+>>>>>>> bd94c29 (simplified rules)
 
         # remove the current node from the open list
         open_list.remove(current_node)
+<<<<<<< HEAD
         # print("removing", current_node.coordinates, "from open list")
+=======
+>>>>>>> bd94c29 (simplified rules)
 
         # add the current node to the closed list
         closed.append(current_node)
+<<<<<<< HEAD
         # print("adding", current_node.coordinates, "to closed list")
 
         # print("current node: ", current_node.coordinates)
         # if the current node is the goal, return the current node
+=======
+
+        #if the current node is the goal, return the current node
+>>>>>>> bd94c29 (simplified rules)
         if current_node.coordinates == goal:
             print("goal coordinate is:", current_node.coordinates)
             print("goal path is:", current_node.path())
@@ -61,6 +85,7 @@ def astar_search(maze, initial, goal):
                 print(row)
 
             return current_node
+<<<<<<< HEAD
 
         # identifying neighbors
         for new_coordinates in [
@@ -95,6 +120,29 @@ def astar_search(maze, initial, goal):
                 new_node = Node(node_coordinates, g_new, h_new, f_new, current_node)
 
                 # print("new node: ", new_node.coordinates)
+=======
+        
+        
+        #identifying neighbors
+        for new_coordinates in [ (1, 0), (0, 1), (0, -1), (-1, 0)]: #neighbors are +1y, +1x, -1x, -1y 
+            #get node coordinates
+            node_coordinates = (current_node.coordinates[0] + new_coordinates[0], current_node.coordinates[1] + new_coordinates[1])
+            
+            #checking that the node is within the maze and is not a wall
+            if (0 <= node_coordinates[1] < len(maze[0]) #rows y
+                and 
+                0<= node_coordinates[0] < len(maze) #columns x
+                and 
+                maze[node_coordinates[0]][node_coordinates[1]] == 0
+            ):
+                
+                g_new = current_node.g + 1
+                h_new = calculate_manhattan_distance(node_coordinates[0], node_coordinates[1], goal[0], goal[1])
+                f_new = g_new + h_new
+
+                new_node = Node(node_coordinates, g_new, h_new, f_new, current_node)
+
+>>>>>>> bd94c29 (simplified rules)
 
                 in_closed = any(
                     node
@@ -115,9 +163,28 @@ def astar_search(maze, initial, goal):
                     if existing_node is None or existing_node.g > new_node.g:
                         if existing_node:
                             open_list.remove(existing_node)
+<<<<<<< HEAD
                             # print("removing", existing_node.coordinates, "from open list")
                         open_list.append(new_node)
                         # print("adding", new_node.coordinates, "to open list")
 
 
 astar_search(maze, (0, 0), (4, 5))
+=======
+                        open_list.append(new_node)
+                
+                print("open list coordinates: ", [node.coordinates for node in open_list])
+                print("closed list coordinates: ", [node.coordinates for node in closed])
+                if open_list == []:
+                    print("No path found")
+                print("End of iteration number: ", i)
+
+                
+
+                
+   
+
+
+
+astar_search(maze, (0, 0), (24, 24))
+>>>>>>> bd94c29 (simplified rules)
