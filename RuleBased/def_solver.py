@@ -47,7 +47,7 @@ class Solver:
         #first prioritize unvisited cells
         for rule in self.ruleStack:
             next_state = rule.action(self.current_state)
-            if rule.condition(self.current_state, self.visitedCellsAndRuleUsed, rule) and not self.is_visited(next_state):
+            if rule.condition(self.current_state) and not self.is_visited(next_state):
                 next_state = rule.action(self.current_state)
                 
                 self.mark_visited(self.current_state, rule)
@@ -58,7 +58,7 @@ class Solver:
         #then once you have to use visited cells, prioritize rules you havent used on those cells before
         for rule in self.ruleStack:
             rule_name = rule.action.__name__
-            if rule.condition(self.current_state, self.visitedCellsAndRuleUsed, rule) and rule_name not in visited_rules:
+            if rule.condition(self.current_state) and rule_name not in visited_rules:
                 next_state = rule.action(self.current_state)
                 
                 self.mark_visited(self.current_state, rule)
