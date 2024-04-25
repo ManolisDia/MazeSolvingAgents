@@ -4,16 +4,13 @@ from def_rules import is_goal
 
 class Solver:
     def __init__(self):
-        #initialize a dictionary to keep track of visited cells and the rules used to visit them
-
         self.visitedCellsAndRuleUsed = {}
         self.maze = maze
         
         start_x, start_y = 0, 0
-        # Convert maze (a list) to a tuple to make the state immutable
         self.initial_state = (start_x, start_y, tuple(map(tuple, self.maze)))
-        goal_x, goal_y = 4,5
-        self.goal_state = (goal_x, goal_y, tuple(map(tuple, self.maze))) 
+        goal_x, goal_y = 4, 5
+        self.goal_state = (goal_x, goal_y, tuple(map(tuple, self.maze)))
         self.current_state = self.initial_state
 
         self.ruleStack = [
@@ -23,7 +20,6 @@ class Solver:
             Rule(condition=can_move_left, action=move_left)
         ]
 
-    
     def is_visited(self, state):
         x, y, _ = state  
         return (x, y) in self.visitedCellsAndRuleUsed
@@ -32,57 +28,53 @@ class Solver:
         rule_name = str(rule.action.__name__)
         x, y, _ = state
         if (x, y) not in self.visitedCellsAndRuleUsed:
-            self.visitedCellsAndRuleUsed[(x, y)] = set()  # Initialize with an empty list
+            self.visitedCellsAndRuleUsed[(x, y)] = set()
         self.visitedCellsAndRuleUsed[(x, y)].add(rule_name)
         print("Added the rule: ", rule_name, " to the cell: ", (y, x))
 
-
-
     def apply_rules(self):
-
         x, y, _ = self.current_state
-        
-        visited_rules = self.visitedCellsAndRuleUsed.get((x, y), set()) 
-        #print("list of cells and rules used: ", self.visitedCellsAndRuleUsed)
-        #first prioritize unvisited cells
+        visited_rules = self.visitedCellsAndRuleUsed.get((x, y), set())
+
         for rule in self.ruleStack:
-            next_state = rule.action(self.current_state)
-            if rule.condition(self.current_state) and not self.is_visited(next_state):
+            if rule.condition(self.current_state):
                 next_state = rule.action(self.current_state)
-                
-                self.mark_visited(self.current_state, rule)
-                self.current_state = next_state
-                return rule, self.current_state
+                if not self.is_visited(next_state):
+                    self.mark_visited(self.current_state, rule)
+                    self.current_state = next_state
+                    return rule, self.current_state
 
-
-        #then once you have to use visited cells, prioritize rules you havent used on those cells before
         for rule in self.ruleStack:
             rule_name = rule.action.__name__
             if rule.condition(self.current_state) and rule_name not in visited_rules:
                 next_state = rule.action(self.current_state)
-                
                 self.mark_visited(self.current_state, rule)
                 self.current_state = next_state
                 return rule, self.current_state
-
-        print("Returning None, None")
+        
+        print("No valid moves left from this state.")
         return None, None  # No valid rule found or all rules exhausted
+   
+    def print_maze(self):
+        display_maze = [list(row) for row in self.maze]
+        x, y, _ = self.current_state
+        display_maze[x][y] = 'A'
+        for (vx, vy), rules in self.visitedCellsAndRuleUsed.items():
+            if (vx, vy) != (x, y):
+                display_maze[vx][vy] = 'V'
+        for row in display_maze:
+            print(' '.join(str(cell) for cell in row))
+        print()
 
-
-    
     def solve_maze(self):
-        i = 0
-        while True and i < 500:
-            i += 1
-            print("Iteration Number: ", i)  
+        while True:  
+            self.print_maze()
             print("Current state: (x={}, y={})".format(self.current_state[1], self.current_state[0]))
-            #print("Visited Cells: ", self.visitedCellsAndRuleUsed)
             if is_goal(self.current_state, self.goal_state):
                 print("Maze Complete!")
-                break
+                return True
             rule, new_state = self.apply_rules()
-            
-
-            #print("ENDOFIT")
+            if new_state is None:
+                print("Maze Unsolvable!")
+                return False
   
-
