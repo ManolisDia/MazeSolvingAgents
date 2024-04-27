@@ -72,7 +72,7 @@ class MazeExplorer:
         
         start_x, start_y = 0, 0
         self.origin = (start_x, start_y, tuple(map(tuple, self.maze)))
-        goal_x, goal_y = 4, 5
+        goal_x, goal_y = 14, 14
         self.destination = (goal_x, goal_y, tuple(map(tuple, self.maze)))
         self.position = self.origin
 
@@ -102,13 +102,11 @@ class MazeExplorer:
         for rule in self.navigationRules:
             if rule.condition(self.position) and rule.action.__name__ not in visited_actions:
                 new_position = rule.action(self.position)
-                if not self.is_explored(new_position):
-                    self.mark_explored(self.position, rule)
-                    self.position = new_position
-                    return rule, self.position
+                self.mark_explored(self.position, rule)
+                return rule, new_position
 
-        print("No available moves from this position.")
-        return None, None
+        print("Attempting to backtrack...")
+        return None, None  # Trigger backtracking if no rules apply
 
     def show_maze(self):
         maze_display = [list(row) for row in self.maze]
@@ -122,14 +120,24 @@ class MazeExplorer:
         print()
 
     def explore_maze(self):
-        while True:
+        path_stack = [self.position]  # Stack to track the path for possible backtracking
+
+        while path_stack:
+            self.position = path_stack[-1]
             self.show_maze()
             print("Current location: (x={}, y={})".format(self.position[1], self.position[0]))
             if is_destination(self.position, self.destination):
                 print("Maze successfully solved!")
                 return True
+
             rule, new_position = self.apply_navigation()
-            if new_position is None:
+
+            if new_position:
+                path_stack.append(new_position)
+            else:
+                path_stack.pop()  # Backtrack
+
+            if not path_stack:
                 print("Cannot solve the maze!")
                 return False
 solver = MazeExplorer()
